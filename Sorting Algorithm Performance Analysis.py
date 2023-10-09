@@ -2,6 +2,36 @@ import random
 import matplotlib.pyplot as plt
 import time
 
+# binary insertion sort 
+def binary_insertion_sort(my_list):
+    comparisons_counter = 0  # Initialize counter for comparisons
+    assignments_counter = 0  # Initialize counter for assignments
+    ## Iterate through each element in my_list, starting from the second element (index 1).
+    for current_index in range(1,len(my_list)):
+        # Store the current element in 'key'
+        key = my_list[current_index]
+        # Initialize the left and right boundaries for binary search.
+        left, right = 0, current_index -1
+        #This line starts a while loop that continues as long as the left boundary is less than or equal to the right boundary. 
+        # This loop performs the binary search to find the correct position for the key element
+        while left <= right:
+            comparisons_counter += 1
+            # integer division '//'
+            mid = (left+right)//2 
+            if my_list[mid] < key:
+                left = mid+1
+            else:
+                right = mid-1
+        # Shift elements to the right to make space for 'key'.
+        for shift_index in range(current_index, left, -1):
+            my_list[shift_index] = my_list[shift_index - 1]
+            assignments_counter += 1
+        my_list[left] = key
+        assignments_counter += 1
+    return comparisons_counter, assignments_counter
+
+
+
 # Bubble Sort Algorithm
 def bubble_sort(my_list):
     comparisons_counter = 0
@@ -63,6 +93,7 @@ def selection_sort(my_list):
     return comparisons_counter, assignments_counter
 
 
+
 # Function to generate sorted input
 def generate_sorted_input(size_of_list):
     return list(range(1, size_of_list + 1))
@@ -119,10 +150,10 @@ def analyze_sorting_algorithms(sorting_function, input_generator, case_name, siz
 
 # Main function
 if __name__ == "__main__":
-    sizes = list(range(100, 1001, 100))
+    sizes = list(range(100, 10001, 100))
 
     # Define sorting algorithms and cases
-    sorting_algorithms = [("Bubble Sort", bubble_sort), ("Insertion Sort", insertion_sort), ("Selection Sort", selection_sort)]
+    sorting_algorithms = [("Bubble Sort", bubble_sort), ("Insertion Sort", insertion_sort), ("Selection Sort", selection_sort), ("Binary Insertion Sort", binary_insertion_sort)]
     cases = [("Best Case", generate_sorted_input), ("Average Case", generate_random_input), ("Worst Case", generate_reverse_sorted_input)]
     metrics = [("Total Operations", "_operations"), ("Execution Time (seconds)", "_times"), ("Comparisons", "_comparisons"), ("Assignments", "_assignments")]
 
@@ -143,7 +174,7 @@ if __name__ == "__main__":
                 if metric == "Total Operations":
                     plt.plot(sizes, total_operations_list, label=f"{case_name}")
                     plt.ylabel("Total Operations")
-                    plt.title(f"{algorithm_name} Complexity Analysis ({metric})")
+                    plt.title(f"{algorithm_name})")
                 elif metric == "Execution Time (seconds)":
                     plt.plot(sizes, execution_time_list, label=f"{case_name}")
                     plt.ylabel("Execution Time (seconds)")
@@ -165,4 +196,4 @@ if __name__ == "__main__":
     #After creating and configuring all subplots, 
     # plt.tight_layout() ensures that the subplots are properly arranged within the figure.
     plt.tight_layout()
-    plt.show()
+    plt.show()  
